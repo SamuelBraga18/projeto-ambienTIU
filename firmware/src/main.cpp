@@ -24,7 +24,7 @@
 
 //Definição dos parâmetros da rede wifi
 const char* ssid = "IOLANDA - Oi FIBRA 2.4/5G";
-const char* pass = "valente2";
+const char* pass = "***";
 const char* url_server = "";
 
 //Criação do objeto do display
