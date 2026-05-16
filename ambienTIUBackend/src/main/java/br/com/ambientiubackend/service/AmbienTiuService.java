@@ -6,6 +6,8 @@ import br.com.ambientiubackend.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AmbienTiuService {
 
@@ -17,7 +19,7 @@ public class AmbienTiuService {
      *
      * Dto é utilizado para transportar os dados para que o model -- como entidade -- salve no repositorio os dados
      */
-    public void saveData(Dto dto){
+    public Dto saveData(Dto dto){
 
         Model newModel = new Model(
                 dto.temperature(),
@@ -27,23 +29,28 @@ public class AmbienTiuService {
         );
 
         repository.save(newModel);
+        return dto;
     }
 
     /**
      *
-     * Classe responsavel pela vizualição dos dados na web
+     * Metodo responsavel pela vizualição dos dados na web
      *
      * Dto irá transportar os dados através do metodo no service para o controller
      */
-    public Dto viewData(Model model){
+    public List<Dto> viewData(){
 
-        Dto newDto = new Dto(
-                model.getTemperature(),
-                model.getHumidity(),
-                model.getIlumination(),
-                model.getTime()
-        );
+        // Recebe todos os dados do repositorio
+        List<Model> listModel = repository.findAll();
 
-        return newDto;
+        // Toda a lista model que foi retirada do repositorio será transformada em dto e enviada a lista para o controller
+        return listModel.stream()
+                .map(model -> new Dto(
+                        model.getTemperature(),
+                        model.getHumidity(),
+                        model.getIlumination(),
+                        model.getTime()
+                ))
+                .toList();
     }
 }
