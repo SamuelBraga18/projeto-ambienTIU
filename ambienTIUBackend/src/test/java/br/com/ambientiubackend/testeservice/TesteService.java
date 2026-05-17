@@ -12,11 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TesteService {
@@ -26,6 +26,8 @@ public class TesteService {
 
     @InjectMocks
     private AmbienTiuService ambienTiuService;
+
+    private Model model;
 
     @Test
     public void salvarDadosSucesso(){
@@ -39,24 +41,34 @@ public class TesteService {
         verify(repository, times(1)).save(modelCaptor.capture());
 
         Model modelSalvo = modelCaptor.getValue();
-        assertEquals("21", modelSalvo.getTemperature());
-        assertEquals("29", modelSalvo.getHumidity());
-        assertEquals("60", modelSalvo.getIlumination());
-        assertEquals(dataTeste, modelSalvo.getTime());
+        assertEquals("21", modelSalvo.getTemperatura());
+        assertEquals("29", modelSalvo.getUmidade());
+        assertEquals("60", modelSalvo.getIluminacao());
     }
 
     @Test
     public void dadosAoVivoSucesso(){
 
-        LocalDateTime dataTeste = LocalDateTime.of(2026, 1, 20, 10, 12);
-        Model inputModel = new Model("31", "34", "120", dataTeste);
+        LocalDateTime horaAtual = LocalDateTime.now();
 
-        Dto resultado = ambienTiuService.viewData(inputModel);
+        Model model = new Model();
+        model.setTemperatura("25.5");
+        model.setUmidade("60.0");
+        model.setIluminacao("80.0");
+        model.setTime(horaAtual);
+
+        List<Model> listaSimulada = List.of(model);
+        when(repository.findAll()).thenReturn(listaSimulada);
+
+        List<Dto> resultado = ambienTiuService.viewData();
 
         assertNotNull(resultado);
-        assertEquals("31", resultado.temperature());
-        assertEquals("34", resultado.humidity());
-        assertEquals("120", resultado.ilumination());
-        assertEquals(dataTeste, resultado.time());
+        assertEquals(1, resultado.size(), "A lista deve conter exatamente 1 elemento");
+
+        Dto dtoResultado = resultado.get(0);
+        assertEquals(model.getTemperatura(), dtoResultado.temperatura());
+        assertEquals(model.getUmidade(), dtoResultado.umidade());
+        assertEquals(model.getIluminacao(), dtoResultado.iluminacao());
+        assertEquals(model.getTime(), dtoResultado.time());
     }
 }

@@ -22,10 +22,9 @@ public class AmbienTiuService {
     public Dto saveData(Dto dto){
 
         Model newModel = new Model(
-                dto.temperature(),
-                dto.humidity(),
-                dto.ilumination(),
-                dto.time()
+                dto.temperatura(),
+                dto.umidade(),
+                dto.iluminacao()
         );
 
         repository.save(newModel);
@@ -46,9 +45,9 @@ public class AmbienTiuService {
         // Toda a lista model que foi retirada do repositorio será transformada em dto e enviada a lista para o controller
         return listModel.stream()
                 .map(model -> new Dto(
-                        model.getTemperature(),
-                        model.getHumidity(),
-                        model.getIlumination(),
+                        model.getTemperatura(),
+                        model.getUmidade(),
+                        model.getIluminacao(),
                         model.getTime()
                 ))
                 .toList();

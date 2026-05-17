@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface Repository extends JpaRepository <Model, Long> {
 
-    List<Model> findByTemperate(String temperate);
-    List<Model> findByHumidity(String humidity);
-    List<Model> findByIlumination(String ilumination);
+    List<Model> findByTemperatura(String temperatura);
+    List<Model> findByUmidade(String umidade);
+    List<Model> findByIluminacao(String iluminacao);
     List<Model> findByTime(LocalDateTime time);
 }

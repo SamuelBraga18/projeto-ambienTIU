@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 public record Dto(
         @NotBlank
-        String temperature,
+        String temperatura,
 
         @NotBlank
-        String humidity,
+        String umidade,
 
         @NotBlank
-        String ilumination,
+        String iluminacao,
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         LocalDateTime time
