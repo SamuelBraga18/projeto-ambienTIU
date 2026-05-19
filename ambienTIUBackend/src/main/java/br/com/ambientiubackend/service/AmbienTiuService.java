@@ -33,11 +33,11 @@ public class AmbienTiuService {
 
     /**
      *
-     * Metodo responsavel pela vizualição dos dados na web
+     * Metodo responsavel pela vizualição de todos os dados na web
      *
      * Dto irá transportar os dados através do metodo no service para o controller
      */
-    public List<Dto> viewData(){
+    public List<Dto> viewAllData(){
 
         // Recebe todos os dados do repositorio
         List<Model> listModel = repository.findAll();
@@ -51,5 +51,20 @@ public class AmbienTiuService {
                         model.getTime()
                 ))
                 .toList();
+    }
+
+    /**
+     * Metodo responsavel por mostrar os dados ao vivo
+     */
+    public Dto viewData(Model model){
+
+        Dto newDto = new Dto(
+                model.getTemperatura(),
+                model.getUmidade(),
+                model.getIluminacao(),
+                model.getTime()
+        );
+
+        return newDto;
     }
 }

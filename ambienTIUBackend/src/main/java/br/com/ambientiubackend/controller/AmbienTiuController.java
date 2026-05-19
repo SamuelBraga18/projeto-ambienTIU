@@ -27,8 +27,14 @@ public class AmbienTiuController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Dto>> viewDataController(){
-        List<Dto> allData = ambienTiuService.viewData();
+    public ResponseEntity<Dto> viewData(Model model){
+        Dto dto = ambienTiuService.viewData(model);
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping ("/alldata")
+    public ResponseEntity<List<Dto>> viewAllDataController(){
+        List<Dto> allData = ambienTiuService.viewAllData();
         return ResponseEntity.ok(allData);
 
     }
